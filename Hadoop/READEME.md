@@ -105,5 +105,6 @@ SecondaryNameNode在小型集群中可以和NameNode共用一台机器，较大�
 - 每个机架（Rack）有30-40个服务器，配置一个1GB的交换机，并向上传输到一个核心交换机或者路由器（1GB或以上）。
 - 在相同的机架中的节点间的带宽的总和，要大于不同机架间的节点间的带宽总和。
 ![83531e9d22fd9552a76e26200be16aae](https://github.com/HDZ12/Big-Data-System/assets/99587726/61af3658-1ad6-41f0-bf4a-7a80d80a4896)
+# Hadoop相关资料
 
 
