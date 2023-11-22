@@ -106,5 +106,8 @@ SecondaryNameNode在小型集群中可以和NameNode共用一台机器，较大�
 - 在相同的机架中的节点间的带宽的总和，要大于不同机架间的节点间的带宽总和。
 ![83531e9d22fd9552a76e26200be16aae](https://github.com/HDZ12/Big-Data-System/assets/99587726/61af3658-1ad6-41f0-bf4a-7a80d80a4896)
 # Hadoop相关资料
-
+- [尚硅谷Hadoop笔记](https://github.com/HDZ12/Big-Data-System/blob/main/Hadoop/book/02_%E5%B0%9A%E7%A1%85%E8%B0%B7%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E4%B9%8BHadoop%EF%BC%88%E5%85%A5%E9%97%A8%EF%BC%89V3.3_20231029185952.pdf)
+- [Hadoop开发者入门专刊](https://github.com/HDZ12/Big-Data-System/blob/main/Hadoop/book/Hadoop%E5%BC%80%E5%8F%91%E8%80%85%E5%85%A5%E9%97%A8%E4%B8%93%E5%88%8A.pdf)
+- [Hadoop权威指南](https://github.com/HDZ12/Big-Data-System/blob/main/Hadoop/book/Hadoop%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97(%E7%AC%AC2%E7%89%88).pdf)
+- [维基百科](https://en.wikipedia.org/wiki/Apache_Hadoop)
 
