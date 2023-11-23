@@ -110,5 +110,5 @@ SecondaryNameNode在小型集群中可以和NameNode共用一台机器，较大�
 - [Hadoop开发者入门专刊](https://github.com/HDZ12/Big-Data-System/blob/main/Hadoop/book/Hadoop%E5%BC%80%E5%8F%91%E8%80%85%E5%85%A5%E9%97%A8%E4%B8%93%E5%88%8A.pdf)
 - [Hadoop权威指南](https://github.com/HDZ12/Big-Data-System/blob/main/Hadoop/book/Hadoop%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97(%E7%AC%AC2%E7%89%88).pdf)
 - [维基百科](https://en.wikipedia.org/wiki/Apache_Hadoop)
-- [Apache Hadoop]([https://www.zhihu.com/people/hdz12](https://hadoop.apache.org/)https://hadoop.apache.org/)
+- [Apache Hadoop](https://hadoop.apache.org/)
 
