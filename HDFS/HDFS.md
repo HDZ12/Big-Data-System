@@ -219,5 +219,7 @@ HDFS只设置唯一一个名称节点，这样做虽然大大简化了系统设�
 - NameNode更新完给客服返回一个ack信号，表示删除成功
 - 当保存着这些数据块的DataNode节点向NameNode节点发送“心跳”，向DataNode节点报告自己当前的相关信息时，在NameNode给DataNode的心跳应答里，NameNode节点会通过DatanodeCommand命令数据节点删除数据。
 - 在这个过程中，读者需要注意两个要点：被删除文件的数据，也就是该文件对应的数据块，在删除操作完成后的一段时间以后，才会被真正删除;名字节点和数据节点间永远维持着简单的主从关系，名字节点不会向数据节点发起任何IPC调用，数据节点需要配合名字节点执行操作，都是通过数据节点发送心跳应答中的DatanodeCommand返回。
+# 相关书籍
+[尚硅谷HDFS教程](https://github.com/HDZ12/Big-Data-System/blob/main/HDFS/book/03_%E5%B0%9A%E7%A1%85%E8%B0%B7%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E4%B9%8BHadoop%EF%BC%88HDFS%EF%BC%89V3.3.docx)
 
 
