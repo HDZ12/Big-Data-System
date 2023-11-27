@@ -1,4 +1,4 @@
-![Hadoop](https://github.com/HDZ12/Big-Data-System/assets/99587726/9c80843e-1bdc-4354-b7dc-b429cbf692b3)# Big-Data-System
+# Big-Data-System
 个人的大数据体系
 # [01.Haddop](https://github.com/HDZ12/Big-Data-System/blob/main/Hadoop/READEME.md#11%E7%AE%80%E4%BB%8B)
 ![Hadoop](https://github.com/HDZ12/Big-Data-System/assets/99587726/d0e93856-1ea1-4bf5-9c48-0f3c430e1d26)
