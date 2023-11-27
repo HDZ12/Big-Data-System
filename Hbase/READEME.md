@@ -408,3 +408,5 @@ NoSQL区别于关系型数据库的一点就是NoSQL不使用SQL作为查询语�
 
 - 易使用。使用诸如SQL这样易于理解的语言，使人们能够更加轻松地使HBase。
 - 减少编码。使用诸如SQL这样更高层次的语言来编写，减少了编写的代码量。
+# 相关书籍
+- [Hbase权威指南](https://github.com/HDZ12/Big-Data-System/blob/main/Hbase/book/HBase%EF%BC%9A%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97.pdf)
