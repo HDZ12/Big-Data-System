@@ -23,6 +23,25 @@ HDFS是一个主从结构，一个HDFS集群是由一个名字节点，它是一
 
 总的来说，HDFS是一个强大的工具，用于处理大规模数据集，并且具有高度的容错性和可扩展性。132
 # [Hbase](https://github.com/HDZ12/Big-Data-System/blob/main/Hbase/READEME.md)
+![Hbase](https://github.com/HDZ12/Big-Data-System/assets/99587726/01161b9e-daef-4afe-be1a-8f49ef8d6a18)
+
+HBase是一个开源的、非关系型、分布式数据库，它是Apache软件基金会的一个项目。HBase的设计目标是为了在普通的硬件集群上提供大规模结构化存储服务。它的主要特性包括：
+- 线性和模块化的可扩展性：HBase可以通过添加更多的机器来扩展，以便处理更多的数据。
+- 严格一致性的读写：HBase提供了严格的读写一致性，这意味着在任何给定的时间，无论数据被读取还是写入，都会返回最新的值。
+- 自动和可配置的分片：HBase表会自动分割成区域，并在集群中分布。用户也可以配置分片的方式。
+- 自动故障恢复：HBase可以自动处理服务器故障，无需人工干预。
+HBase是Google BigTable的开源实现，它运行在Hadoop HDFS文件系统之上，并且支持Hadoop/MapReduce计算框架。HBase的主要应用场景包括大规模数据的实时查询和处理。
+
+HBase的数据模型是一个由行和列组成的稀疏、分布式、持久化的多维排序映射。这个模型非常适合于非常大的表（数十亿行，数百万列）的存储和随机实时访问。
+
+HBase的主要组件包括HMaster、RegionServer和ZooKeeper。HMaster负责协调和管理RegionServer，而RegionServer则负责处理对数据的读写请求。ZooKeeper是一个分布式协调服务，它用于维护和监控HBase集群的状态。
+
+总的来说，HBase是一个强大的工具，能够处理PB级别的大数据，并提供快速、随机的读写能力。它是大数据处理和分析的重要工具之一。
+
+
+
+
+
 
 
 
