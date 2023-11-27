@@ -271,4 +271,140 @@ Hbase与DataNode通信，首先找到HDFSBlock，seek到指定偏移量，从磁
    （9）RegionServer将子region A和B的相关信息写入.META.。此后，Client便可以扫描到新的region，并且可以向其发送请求。Client会在本地缓存.META.的条目，但当它们向RegionServer或.META.发送请求时，这些缓存便无效了，他们就重新学习.META.中新region的信息。
    
    （10）RegionServer将zookeeper中的znode（ /hbase/region-in-transition/region-name）更改为SPLIT状态，以便Master可以监测到
-   
+   ![b7bf366a53e7908459de202ed967c804](https://github.com/HDZ12/Big-Data-System/assets/99587726/1c730c10-cd14-41d4-a280-3e7d48009799)
+rollback阶段：如果execute阶段出现异常，则执行rollback操作。为了实现回滚，这个分裂过程分为很多子阶段，回滚程序会根据当前进展到哪个子阶段清理对应的垃圾数据。代码中用transaction journal (JournalEnteyType)表征各个阶段。
+![9f59f4d629efd5870c1b7cbbbcd59f80](https://github.com/HDZ12/Big-Data-System/assets/99587726/731010e1-7348-467a-aa47-823e7cd05853)
+分裂后子Region的文件实际没有任何用户表数据，文件中存储的仅是一些元数据信息——分裂点rowkey等。那么通过reference如何查找数据呢？子Region的数据实际在什么时候完成真正迁移？数据迁移完成之后父region什么时候被删除？
+1. 根据reference文件名（Hfile名+父region名）定位到真实数据所在文件路径。
+2. 根据reference文件内容记载的两个重要字段确定实际扫描范围。Top字段表示扫描范围是上半部分还是下半部分，结合splitkey字段可以确定扫描范围是\[firstkey,splitkey)还是\[splitkey,endkey)。
+3. 父Region数据迁移到子Region目录的时间
+迁移发生在子region执行Major compaction时。子region执行major compaction后会将父region中属于该子region的所有数据读出来，并写入子region数据文件中。
+4. 父Region被删除的时间
+Master会启动一个线程定期遍历检查所有处于split状态的父region，确定父region是否可以被清理。检查过程分为两步：1）检测线程首先会在meta表中读出所有split列为true的region，并加载出其分裂后生成的两个子region（meta表中splitA和splitB列）。2）检查两个子region是否还存在引用文件，如果都不存在引用文件就可以认为该父region对应的文件可以被删除。
+# Compaction基本工作原理
+
+Compaction是从一个Region的Store中选择部分Hfile文件进行合并，合并原理是，先从这些待合并的数据文件中依次读出keyvalue，再由小到大排序后写入一个新的文件。之后，这个新生成的文件就会取代之前已合并的所有文件对外提供服务。Hbase根据合并规模将***Compaction分为两类：Minor Compaction和Major Compaction
+MinorCompaction是指选取部分小的、相邻的Hfile，将它们合并成一个更大的Hfile。
+MajorCompaction是指将一个Store中所有的Hfile合并成一个Hfile。***
+
+随着Hfile文件数不断增多，查询可能需要越来越多的IO操作，读取延迟必然会越来越大。执行Compaction会使文件个数基本稳定，进而读取IO的次数会比较稳定，延迟就会稳定在一定的范围。
+
+### Compaction触发时机
+
+Hbase中触发Compaction时机有很多，最常见的时机有以下三种：Memstore flush，后台线程周期性检查以及手动触发。
+
+MemStore Flush： MemStore Flush会产生Hfile文件，文件越来越多就需要compact执行合并。因此每次执行完flush之后，都会对当前store中的文件数进行判断，一旦Store中总文件数大于hbase.hstore.compactionThreshold，就会触发Compacton。\
+后台线程周期性检查：Regionserver会在后台启动一个线程CompactionChecker，定期触发检查对应store是否需要执行compaction。和flush不同的是，该线程优先检查Store中总文件数是否大于hbase.hstore.compactionThreshold，一旦大于就会触发Compacton，如果不满足，接着检查是否满足Major Compaction条件，如果当前Store中Hfile的最早更新时间早于某个值mcTime，就会触发Major Compaction。\
+手动触发：管理员手动触发Compaction
+
+**待合并Hfile选择策略**理想情况是这样，选择的待合并Hfile文件集合承载了大量IO请求但是文件本身很小，这样Compaction本身不会消耗太多IO，而且合并完成之后对读的性能会有显著提升。
+Hbase提出两种选择策略：**RatioBasedCompactionPolicy以及ExploringCompactionPolicy**
+
+待合并Hfile选择策略：
+
+无论哪种选择策略，都会首先对该Store中所有Hfile逐一进行排查，排除不满足条件的部分文件：
+
+- 排除当前正在制定Compaction的文件以及比这些文件更新的所有文件。
+
+- 排除某些过大的文件，如果文件大于设定阈值，则被排除，否则会产生大量IO消耗
+
+经过排除后留下的文件称为候选文件，接下来判断候选文件是否满足Major Compaction条件，满足一条就对全部文件进行合并：
+
+- 长时间没有进行Major Compaction且候选文件数小于hbase.hstore.major.compaction（默认10）
+- Store中含有reference文件，reference文件是region分裂产生的临时文件。
+
+RatioBasedCompactionPolicy：
+从老到新逐一扫描所有候选文件，满足其中条件之一便停止扫描：
+
+1. 当前文件大小<比当前文件新的hbase.store.compaction.max个文件大小总和*ratio。其中ratio是一个可变的比例，在高峰时期ratio为1.2，非高峰时期ration为5，也就是非高峰期允许compact更大的文件。Hbase通过参数设置高峰时间段。
+2. 当前所剩候选文件数<=hbase.store.compaction.min（默认为3）
+
+停止扫描后，待合并文件就选择出来了，即当前扫描文件以及比它新的hbase.hstore.compaction.max个文件。
+
+ExploringCompactionPolicy：
+该策略思路基本和前一个相同，不同的是，Ratio策略找到一个合适的文件及合之后就停止扫描了，而Exploring策略会记录所有合适的文件集合，并在这些文件集合中找到最优解。最优解可以理解为待合并文件数相同的情况下文件较小，这样有利于减少Compaction带来的IO消耗。
+
+# Hfile文件合并执行
+
+1. 分别读出待合并Hfile文件的KeyValue，进行归并排序处理，之后写到./tmp目录下的临时文件中。
+2. 将临时文件移动到对应Store的数据目录。
+3. 将Compaction的输入文件路径和输出文件路径封装为KV写入Hlog日志，并打上Compaction标记。
+4. 将对应Store数据目录下的Compaction输入文件全部删除。
+
+那为什么需要合并Region呢？这个需要从Region的Split来说。当一个Region被不断的写数据，达到Region的Split的阈值时（由属性hbase.hregion.max.filesize来决定），该Region就会被Split成2个新的Region。随着数据量的不断增加，Region不断的执行Split，那么Region的个数也会越来越多。
+       一个表的Region越多，在进行读写操作时，或是对该表执行Compaction操作时，此时集群的压力是很大的。据统计，在一个表的Region个数达到9000+时，每次对该表进行Compaction操作时，集群的负载便会加重，而间接的也会影响应用程序的读写。一个表的Region过大，势必整个集群的Region个数也会增加，负载均衡后，每个RegionServer承担的Region个数也会增加。
+       因此，这种情况是很有必要的进行Region合并的。比如，当前Region进行Split的阀值设置为30GB，那么我们可以对小于等于10GB的Region进行一次合并，减少每个表的Region，从而降低整个集群的Region，减缓每个RegionServer上的Region压力。
+
+主要流程：
+
+1. 客户端发送merge请求给Master。
+2. Master将待合并的所有Region都move到同一个RegionServer。
+3. Master发送Merge请求给RegionServer。
+4. RegionServer启动一个本地事务执行merge操作。
+5. merge操作将待合并的两个Region下线，并将两个Region的文件进行合并。
+6. 将这两个Region从.Meta中删除，并将新生成的Region添加到.Meta中。
+7. 将新生成的Region上线
+
+# Region迁移原理
+
+作为一个分布式系统，分片迁移是最基础的核心功能。集群负载均衡、故障恢复等功能都是建立在分片迁移的基础之上的。比如集群负载均衡，可以简单理解为集群中所有节点上的分片数目保持相同。实际执行分片迁移时可以分为两个步骤:第一步，根据负载均衡策略制定分片迁移计划;第二步，根据迁移计划执行分片的实际迁移。
+
+HBase系统中，分片迁移就是Region迁移。和其他很多分布式系统不同，HBase中Region迁移是一个非常轻量级的操作。
+
+在当前的HBase版本中，Region迁移虽然是一-个轻量级操作，但实现逻辑依然比较复杂。复杂性主要表现在两个方面:其一，Region迁移过程涉及多种状态的改变;其二，迁移过程中涉及Master、ZooKeeper ( ZK)以及RegionServer等多个组件的相互协调。
+
+在实际执行过程中，Region迁移操作分两个阶段:unassign阶段和assign阶段。
+
+### unassign阶段
+
+unassign表示Region从源RegionServer上下线。
+
+1. Master生成事件M_ ZK_ REGION_ CLOSING并更新到ZooKeeper组件，同时将本地内存中该Region的状态修改为PENDING_ CLOSE。
+2.  Master通过RPC发送close命令给拥有该Region的RegionServer，令其关闭该Region。
+3. RegionServer接 收到Master发送过来的命令后，生成一个RS_ ZK_ REGION_ CLOSING事件， 更新到ZooKeeper。
+4. Master 监听到ZooKeeper节点变动后，更新内存中Region的状态为CLOSING。
+5. RegionServer 执行Region关闭操作。如果该Region正在执行flush或者Compaction,等待操作完成;否则将该Region下的所有MemStore强制flush,然后关闭Region相关的服务。
+6. 关闭完成后生成事件RS_ZK_REGION_ CLOSED，更新到ZooKeeper。Master监听到ZooKeeper节点变动后，更新该Region的状态为CLOSED
+
+##  assign阶段
+
+assign表示Region在目标RegionServer上上线
+
+1. Master生成事件M_ ZK_REGION_ OFFLINE并更新到ZooKeeper组件，同时将本地内存中该Region的状态修改为PENDING_ OPEN。
+2.  Master通过 RPC发送open命令给拥有该Region的RegionServer，令其打开该Region。
+3. RegionServer接收 到Master发送过来的命令后，生成一个RS_ ZK_ REGION_ OPENING事件，更新到ZooKeeper。
+4. Master 监听到ZooKeeper节点变动后，更新内存中Region的状态为OPENING。
+5. RegionServer 执行Region打开操作，初始化相应的服务。
+6. 打开完成之后生成事件RS_ZK_REGION_ OPENED，更新到ZooKeeper，Master监听到ZooKeeper节点变动后，更新该Region的状态为OPEN。
+
+# HBase实际应用中的性能优化方法
+
+- 行键（Row Key）：
+  
+  行键是按照字典序存储，因此，设计行键时，要充分利用这个排序特点，将经常一起读取的数据存储到一块，将最近可能会被访问的数据放在一块。
+举个例子：如果最近写入HBase表中的数据是最可能被访问的，可以考虑将时间戳作为行键的一部分，由于是字典序排序，所以可以使用Long.MAX_VALUE - timestamp作为行键，这样能保证新写入的数据在读取时可以被快速命中。
+
+- InMemory：
+  
+  创建表的时候，可以通过HColumnDescriptor.setInMemory(true)将表放到Region服务器的缓存中，保证在读取的时候被cache命中。
+
+- Max Version：
+  
+  创建表的时候，可以通过HColumnDescriptor.setMaxVersions(int maxVersions)设置表中数据的最大版本，如果只需要保存最新版本的数据，那么可以设置setMaxVersions(1)。
+
+- Time To Live：
+  
+  创建表的时候，可以通过HColumnDescriptor.setTimeToLive(int timeToLive)设置表中数据的存储生命期，过期数据将自动被删除，例如如果只需要存储最近两天的数据，那么可以设置setTimeToLive(2 * 24 * 60 * 60)。
+
+- Master-status(自带)：HBase Master默认基于Web的UI服务端口为60010，HBase region服务器默认基于Web的UI服务端口为60030.如果master运行在名为master.foo.com的主机中，mater的主页地址就是http://master.foo.com:60010，用户可以通过Web浏览器输入这个地址查看该页面
+可以查看HBase集群的当前状态
+- Ganglia：Ganglia是UC Berkeley发起的一个开源集群监视项目，用于监控系统性能
+- OpenTSDB：OpenTSDB可以从大规模的集群（包括集群中的网络设备、操作系统、应用程序）中获取相应的metrics并进行存储、索引以及服务，从而使得这些数据更容易让人理解，如web化，图形化等
+- Ambari：Ambari 的作用就是创建、管理、监视 Hadoop 的集群
+
+# 在HBase之上构建SQL引擎
+
+NoSQL区别于关系型数据库的一点就是NoSQL不使用SQL作为查询语言，至于为何在NoSQL数据存储HBase上提供SQL接口，有如下原因：
+
+- 易使用。使用诸如SQL这样易于理解的语言，使人们能够更加轻松地使HBase。
+- 减少编码。使用诸如SQL这样更高层次的语言来编写，减少了编写的代码量。
