@@ -1,6 +1,8 @@
-# Big-Data-System
+![Hadoop](https://github.com/HDZ12/Big-Data-System/assets/99587726/9c80843e-1bdc-4354-b7dc-b429cbf692b3)# Big-Data-System
 个人的大数据体系
 # [01.Haddop](https://github.com/HDZ12/Big-Data-System/blob/main/Hadoop/READEME.md#11%E7%AE%80%E4%BB%8B)
+![Hadoop](https://github.com/HDZ12/Big-Data-System/assets/99587726/d0e93856-1ea1-4bf5-9c48-0f3c430e1d26)
+
 Hadoop是一个由Apache基金会所开发的分布式系统基础架构。用户可以在不了解分布式底层细节的情况下，开发分布式程序。充分利用集群的威力进行高速运算和存储。
 
 Hadoop实现了一个分布式文件系统，即Hadoop Distributed File System (HDFS)，它可以将用户的大规模数据集分布存储在集群的各个节点上，形成一个高容错性的并行系统。
@@ -20,6 +22,7 @@ HDFS采用了主从（Master/Slave）结构模型，一个HDFS集群是由一个
 HDFS是一个主从结构，一个HDFS集群是由一个名字节点，它是一个管理文件命名空间和调节客户端访问文件的主服务器，当然还有一些数据节点，通常是一个节点一个机器，它来管理对应节点的存储4。所有文件信息都保存在名字节点这里，名字节点毁坏后无法重建文件3。因此，必须高度重视namenode的容错性3。
 
 总的来说，HDFS是一个强大的工具，用于处理大规模数据集，并且具有高度的容错性和可扩展性。132
+# [Hbase](https://github.com/HDZ12/Big-Data-System/blob/main/Hbase/READEME.md)
 
 
 
