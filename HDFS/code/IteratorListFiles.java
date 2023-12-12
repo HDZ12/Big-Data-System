@@ -17,4 +17,13 @@ public class IteratorListFiles{
     FileStatus[] files = hdfs.listStatus(path);
     for(FifleStatus file:files){
       if(file.isDirectory()){
-          System.out.println(file.getPermission()
+          System.out.println(file.getPermission()+" "+file.getOwner()+" "+file.getGroup()+" "+file.getPath());
+          IteratorListFiles(hdfs,file.getPath());
+      }
+      else if(file.isFile()){
+          System.out.println(file.getPermission()+" "+file.getOwner()+" "+file.getGroup()+" "+file.getPath());
+      }
+    }
+  }
+}
+      
