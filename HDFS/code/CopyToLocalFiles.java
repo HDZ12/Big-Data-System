@@ -4,7 +4,7 @@ import java.net.URISyntaxException
 import org.apache.hadoop.conf.confirguation
 import org.apache.hadoop.fs.FileSystem
 import org.apache.hadoop.fs.Path
-Public class CopyToLocalFiles{
+public class CopyToLocalFiles{
   public static void main(String[] args) throws IOException,URISynataxException{
     Confirguation conf = new Confirguation();
     String hdfsPath = "hdfs://hadoop01:9000";
