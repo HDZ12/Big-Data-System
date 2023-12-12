@@ -1,5 +1,10 @@
 # Big-Data-System
 个人的大数据体系
+1. [Haddop](https://github.com/HDZ12/Big-Data-System/blob/main/Hadoop/READEME.md#11%E7%AE%80%E4%BB%8B)
+2. [HDFS](https://github.com/HDZ12/Big-Data-System/blob/main/HDFS/HDFS.md)
+3. [Hbase](https://github.com/HDZ12/Big-Data-System/blob/main/Hbase/READEME.md)
+4. [NO SQL](https://github.com/HDZ12/Big-Data-System/blob/main/No%20SQL/READEME.md)
+5. [Mapreduce](https://github.com/HDZ12/Big-Data-System/blob/main/Mapreduce/READEME.md)
 # [Haddop](https://github.com/HDZ12/Big-Data-System/blob/main/Hadoop/READEME.md#11%E7%AE%80%E4%BB%8B)
 ![Hadoop](https://github.com/HDZ12/Big-Data-System/assets/99587726/d0e93856-1ea1-4bf5-9c48-0f3c430e1d26)
 
@@ -61,7 +66,22 @@ NoSQL（Not Only SQL）是一类用于存储和检索大量非结构化或半结
 - **图形数据库：** Neo4j、ArangoDB等。这些数据库专注于处理图形数据结构，适用于关系较为复杂的数据。
 
 总体而言，NoSQL数据库在处理大规模和复杂数据时提供了更灵活、可扩展和高性能的解决方案，但也需要根据具体的应用场景来选择合适的类型和实现。
+# [Mapreduce](https://github.com/HDZ12/Big-Data-System/blob/main/Mapreduce/READEME.md)
+MapReduce 是一种分布式计算编程模型，旨在处理大规模数据集。它最初由Google提出，并在Apache Hadoop等开源项目中得到广泛应用。以下是关于 MapReduce 的简介：
 
+MapReduce简介：
+
+MapReduce 是一种用于大规模数据处理的编程模型和处理框架。它允许开发人员编写能够在分布式计算环境中运行的并行化程序，用于处理大规模数据集。MapReduce 的设计理念是将计算任务分解为两个主要阶段：Map 阶段和 Reduce 阶段。
+
+Map阶段： 在这个阶段，原始数据集被划分成若干个小块，每个小块通过一个称为“Mapper”的函数进行处理。Mapper 函数生成一系列键值对（key-value pairs），其中键用于分组数据，值用于存储中间结果。Map 阶段的目标是将原始数据集分解成更小的部分，以便并行处理。
+
+Shuffle and Sort阶段： 在 Map 阶段之后，MapReduce 框架会对生成的键值对进行排序和分组操作。这个过程称为 Shuffle and Sort 阶段，其目的是将所有具有相同键的数据汇总在一起，以便传递给 Reduce 阶段的 Reduce 函数。
+
+Reduce阶段： 在 Reduce 阶段，数据按照键值对的键被分组，然后传递给称为“Reducer”的函数进行处理。Reducer 函数处理这些组并生成最终的输出结果。Reduce 阶段的目标是将中间结果整合成最终的结果。
+
+MapReduce 具有很高的可扩展性，可以在大规模的分布式计算集群上运行。它被广泛应用于处理海量数据，例如在搜索引擎索引构建、日志分析、机器学习等领域。
+
+Apache Hadoop 是一个开源的 MapReduce 实现，它提供了一个分布式存储系统（Hadoop Distributed File System，HDFS）以及一个用于执行 MapReduce 任务的框架。 MapReduce 模型的成功启发了许多其他分布式计算框架的发展，如 Apache Spark、Apache Flink 等。
 
 
 
