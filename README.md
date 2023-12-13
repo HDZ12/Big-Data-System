@@ -11,6 +11,9 @@
    2. [Prffilter.java](https://github.com/HDZ12/Big-Data-System/blob/main/Hbase/code/%E8%BF%87%E6%BB%A4%E5%99%A8/Prffilter.java)
 4. [NO SQL](https://github.com/HDZ12/Big-Data-System/blob/main/No%20SQL/READEME.md)
 5. [Mapreduce](https://github.com/HDZ12/Big-Data-System/blob/main/Mapreduce/READEME.md)
+   1. [WordCount.java](https://github.com/HDZ12/Big-Data-System/blob/main/Mapreduce/code/WordCount.java)
+   2. [MyAverage.java](https://github.com/HDZ12/Big-Data-System/blob/main/Mapreduce/code/MyAverage.java)
+   3. [Filter.java](https://github.com/HDZ12/Big-Data-System/blob/main/Mapreduce/code/Filter.java)
 # [Haddop](https://github.com/HDZ12/Big-Data-System/blob/main/Hadoop/READEME.md#11%E7%AE%80%E4%BB%8B)
 ![Hadoop](https://github.com/HDZ12/Big-Data-System/assets/99587726/d0e93856-1ea1-4bf5-9c48-0f3c430e1d26)
 
