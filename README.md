@@ -7,6 +7,8 @@
    3. [ListFiles.java](https://github.com/HDZ12/Big-Data-System/blob/main/HDFS/code/ListFiles.java)
    4. [IteratorListFiles.java](https://github.com/HDZ12/Big-Data-System/blob/main/HDFS/code/IteratorListFiles.java)
 3. [Hbase](https://github.com/HDZ12/Big-Data-System/blob/main/Hbase/READEME.md)
+   1. [HBase.java](https://github.com/HDZ12/Big-Data-System/blob/main/Hbase/code/%E8%BF%87%E6%BB%A4%E5%99%A8/HBase.java  )
+   2. [Prffilter.java](https://github.com/HDZ12/Big-Data-System/blob/main/Hbase/code/%E8%BF%87%E6%BB%A4%E5%99%A8/Prffilter.java)
 4. [NO SQL](https://github.com/HDZ12/Big-Data-System/blob/main/No%20SQL/READEME.md)
 5. [Mapreduce](https://github.com/HDZ12/Big-Data-System/blob/main/Mapreduce/READEME.md)
 # [Haddop](https://github.com/HDZ12/Big-Data-System/blob/main/Hadoop/READEME.md#11%E7%AE%80%E4%BB%8B)
