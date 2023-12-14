@@ -14,6 +14,7 @@
    1. [WordCount.java](https://github.com/HDZ12/Big-Data-System/blob/main/Mapreduce/code/WordCount.java)
    2. [MyAverage.java](https://github.com/HDZ12/Big-Data-System/blob/main/Mapreduce/code/MyAverage.java)
    3. [Filter.java](https://github.com/HDZ12/Big-Data-System/blob/main/Mapreduce/code/Filter.java)
+6. [Scala](https://github.com/HDZ12/Scala/tree/main)
 # [Haddop](https://github.com/HDZ12/Big-Data-System/blob/main/Hadoop/READEME.md#11%E7%AE%80%E4%BB%8B)
 ![Hadoop](https://github.com/HDZ12/Big-Data-System/assets/99587726/d0e93856-1ea1-4bf5-9c48-0f3c430e1d26)
 
@@ -91,9 +92,26 @@ Reduce阶段： 在 Reduce 阶段，数据按照键值对的键被分组，然�
 MapReduce 具有很高的可扩展性，可以在大规模的分布式计算集群上运行。它被广泛应用于处理海量数据，例如在搜索引擎索引构建、日志分析、机器学习等领域。
 
 Apache Hadoop 是一个开源的 MapReduce 实现，它提供了一个分布式存储系统（Hadoop Distributed File System，HDFS）以及一个用于执行 MapReduce 任务的框架。 MapReduce 模型的成功启发了许多其他分布式计算框架的发展，如 Apache Spark、Apache Flink 等。
+# [Scala](https://github.com/HDZ12/Scala/tree/main)
+Scala（Scalable Language的缩写）是一种多范式的编程语言，结合了面向对象编程和函数式编程的特性。以下是Scala的简介：
 
+1. **创始人：** Scala由Martin Odersky于2003年创建，并在Ecole Polytechnique Fédérale de Lausanne（EPFL）开发。它的目标是设计一种功能强大、高度表达性和可扩展性的编程语言。
 
+2. **多范式：** Scala是一种多范式语言，支持面向对象编程（OOP）和函数式编程（FP）范式。这使得开发者能够以更灵活的方式构建和组织代码。
 
+3. **静态类型：** Scala是一种静态类型语言，具有强大的类型推导系统，可以在不显式指定类型的情况下进行类型推断。这既提供了类型安全性，又使得代码更具灵活性。
+
+4. **表达力强大：** Scala具有高度表达性，允许开发者使用简洁的语法编写功能丰富的代码。这使得Scala适用于大型项目和复杂的系统。
+
+5. **与Java的互操作性：** Scala与Java天然集成，可以直接使用Java的类库和工具。这种互操作性使得Scala成为Java虚拟机（JVM）上一种有力的替代语言。
+
+6. **并发编程支持：** Scala内置支持并发编程，提供了`Actor`模型和`Future`等机制，使得编写并发代码更加容易。
+
+7. **模式匹配：** Scala引入了强大的模式匹配功能，可以简化复杂数据结构的处理，并提高代码的可读性。
+
+8. **函数式编程特性：** Scala在函数式编程方面借鉴了很多特性，包括不可变性、高阶函数、闭包等。这使得编写函数式风格的代码变得更加容易。
+
+9. **工具丰富：** Scala拥有丰富的开发工具，包括构建工具（sbt）、集成开发环境（IDE）支持等，这些工具使得开发者能够更高效地开发和维护Scala项目。
 
 
 
