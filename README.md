@@ -1,6 +1,6 @@
 # Big-Data-System
 个人的大数据体系
-1. [Haddop](https://github.com/HDZ12/Big-Data-System/blob/main/Hadoop/READEME.md#11%E7%AE%80%E4%BB%8B)
+1. [Hadoop](https://github.com/HDZ12/Big-Data-System/blob/main/Hadoop/READEME.md#11%E7%AE%80%E4%BB%8B)
 2. [HDFS](https://github.com/HDZ12/Big-Data-System/blob/main/HDFS/HDFS.md)
    1. [CopyFromLocalFile.java](https://github.com/HDZ12/Big-Data-System/blob/main/HDFS/code/CopyFromLocalFile.java)
    2. [CopyToLocalFiles.java](https://github.com/HDZ12/Big-Data-System/blob/main/HDFS/code/CopyToLocalFiles.java)
@@ -15,7 +15,7 @@
    2. [MyAverage.java](https://github.com/HDZ12/Big-Data-System/blob/main/Mapreduce/code/MyAverage.java)
    3. [Filter.java](https://github.com/HDZ12/Big-Data-System/blob/main/Mapreduce/code/Filter.java)
 6. [Scala](https://github.com/HDZ12/Scala/tree/main)
-# [Haddop](https://github.com/HDZ12/Big-Data-System/blob/main/Hadoop/READEME.md#11%E7%AE%80%E4%BB%8B)
+# [Hadoop](https://github.com/HDZ12/Big-Data-System/blob/main/Hadoop/READEME.md#11%E7%AE%80%E4%BB%8B)
 ![Hadoop](https://github.com/HDZ12/Big-Data-System/assets/99587726/d0e93856-1ea1-4bf5-9c48-0f3c430e1d26)
 
 Hadoop是一个由Apache基金会所开发的分布式系统基础架构。用户可以在不了解分布式底层细节的情况下，开发分布式程序。充分利用集群的威力进行高速运算和存储。
